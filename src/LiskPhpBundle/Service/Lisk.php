@@ -11,11 +11,11 @@ class Lisk
     private $networkHash = "ed14889723f24ecc54871d058d98ce91ff2f973192075c0155ba2b7b70ad2511"; // Mainnet
     //private $networkHash = "da3ed6a45429278bac2666961289ca17ad86595d33b31037615d4b8e8f158bba"; // Testnet
 
-    const ACCOUNTS = "/api/accounts/";
+    const ACCOUNTS_ENDPOINT = "/api/accounts/";
     const BLOCKS_ENDPOINT = "/api/blocks/";
-    const VOTERS_ENDPOINT = "/api/delegates/voters?publicKey=";
+    const LOADER_ENDPOINT = "/api/loader/";
     const DELEGATE_ENDPOINT = "/api/delegates/";
-    const FORGING_ENDPOINT = "/api/delegates/forging";
+    const SIGNATURE_ENDPOINT = "/api/signatures/";
 
     public function __construct($baseUrl)
     {
@@ -25,48 +25,134 @@ class Lisk
     /*
      * Delegate endpoints
      */
-    public function getDelegates(){
+    public function enableDelegate($secret, $secondSecret, $username)
+    {
+        return "NOT_YET_IMPLEMENTED";
+    }
+
+    public function getDelegates()
+    {
         $url = $this->baseUrl . self::DELEGATE_ENDPOINT;
-        return $this->execute("GET",$url,false,false,true);
+        return $this->execute("GET", $url, false, false, true);
     }
 
-    public function getDelegateByUsername($username){
+    public function getDelegateByUsername($username)
+    {
         $url = $this->baseUrl . self::DELEGATE_ENDPOINT . "/get?username=" . $username;
-        return $this->execute("GET",$url,false,false,true);
+        return $this->execute("GET", $url, false, false, true);
     }
 
-    public function getDelegateByPublicKey($publicKey){
+    public function getDelegateByPublicKey($publicKey)
+    {
         $url = $this->baseUrl . self::DELEGATE_ENDPOINT . "/get?publicKey=" . $publicKey;
-        return $this->execute("GET",$url,false,false,true);
+        return $this->execute("GET", $url, false, false, true);
     }
 
-    public function getDelegateVoters($publicKey){
+    public function searchDelegates($username, $orderBy, $sortBy)
+    {
+        return "NOT_YET_IMPLEMENTED";
+    }
+
+    public function getDelegateCount()
+    {
+        $url = $this->baseUrl . self::DELEGATE_ENDPOINT . "/count";
+        return $this->execute("GET", $url, false, false, true);
+    }
+
+    public function getDelegateVoters($publicKey)
+    {
         $url = $this->baseUrl . self::DELEGATE_ENDPOINT . "/voters?publicKey=" . $publicKey;
-        return $this->execute("GET",$url,false,false,true);
+        return $this->execute("GET", $url, false, false, true);
     }
 
-    public function enableForging($secret){
+    public function enableForging($secret)
+    {
         $url = $this->baseUrl . self::DELEGATE_ENDPOINT . '/forging/enable';
         $postBody = "secret=" . $secret;
-        return $this->execute("POST",$url,$postBody,false,true);
+        return $this->execute("POST", $url, $postBody, false, true);
     }
 
-    public function disableForging($secret){
+    public function disableForging($secret)
+    {
         $url = $this->baseUrl . self::DELEGATE_ENDPOINT . '/forging/disable';
         $postBody = "secret=" . $secret;
-        return $this->execute("POST",$url,$postBody,false,true);
+        return $this->execute("POST", $url, $postBody, false, true);
     }
 
-    public function getForgedByPublicKey($publicKey){
+    public function getForgedByPublicKey($publicKey)
+    {
         $url = $this->baseUrl . self::DELEGATE_ENDPOINT . "/forging/getForgedByAccount?generatorPublicKey=" . $publicKey;
-        return $this->execute("GET",$url,false,false,true);
+        return $this->execute("GET", $url, false, false, true);
+    }
+
+    public function getNextForgers($limit = 10)
+    {
+        if ($limit < 1 || $limit > 101) {
+            return false;
+        }
+
+        $url = $this->baseUrl . self::DELEGATE_ENDPOINT . "/forging/getNextForgers?limit=" . $limit;
+        return $this->execute("GET", $url, false, false, true);
     }
 
     /*
      * Account endpoints
      */
+    public function openAccount($secret)
+    {
+        $url = $this->baseUrl . self::ACCOUNTS_ENDPOINT . '/open';
+        $postBody = "secret=" . $secret;
+        return $this->execute("POST", $url, $postBody, false, true);
+    }
+
+    public function getAccountBalance($address)
+    {
+        $url = $this->baseUrl . self::ACCOUNTS_ENDPOINT . '/getBalance?address=' . $address;
+        return $this->execute("GET", $url, false, false, true);
+    }
+
+    public function getAccountPublicKey($address)
+    {
+        $url = $this->baseUrl . self::ACCOUNTS_ENDPOINT . '/getPublicKey?address=' . $address;
+        return $this->execute("GET", $url, false, false, true);
+    }
+
+    public function generateAccountPublicKey($secret)
+    {
+        $url = $this->baseUrl . self::ACCOUNTS_ENDPOINT . '/generatePublicKey';
+        $postBody = "secret=" . $secret;
+        return $this->execute("POST", $url, $postBody, false, true);
+    }
+
+    public function getAccountInfo($address){
+        $url = $this->baseUrl . self::ACCOUNTS_ENDPOINT . '?address=' . $address;
+        return $this->execute("GET", $url, false, false, true);
+    }
+
     public function getVotesByAddress($address){
-        $url = $this->baseUrl . self::ACCOUNTS . '/delegates?address=' . $address;
+        $url = $this->baseUrl . self::ACCOUNTS_ENDPOINT . '/delegates?address=' . $address;
+        return $this->execute("GET",$url,true,false,true);
+    }
+
+    public function voteDelegates($votes){
+        return "NOT_YET_IMPLEMENTED";
+    }
+    
+    /*
+     * Loader endpoints
+     */
+    public function getLoadingStatus(){
+        $url = $this->baseUrl . self::LOADER_ENDPOINT . '/status';
+        return $this->execute("GET",$url,true,false,true);
+    }
+
+    public function getSyncStatus(){
+        $url = $this->baseUrl . self::LOADER_ENDPOINT . '/status/sync';
+        return $this->execute("GET",$url,true,false,true);
+    }
+
+    public function getPing(){
+        $url = $this->baseUrl . self::LOADER_ENDPOINT . '/status/ping';
         return $this->execute("GET",$url,true,false,true);
     }
 
@@ -83,12 +169,24 @@ class Lisk
         return $this->execute("GET",$url,false,false,true);
     }
 
-    public function getBlockByHeight($blockHeight)
-    {
+    public function getBlockByHeight($blockHeight){
         $url = $this->baseUrl . self::BLOCKS_ENDPOINT . "?height=" . $blockHeight;
         return $this->execute("GET", $url, false, false, true);
     }
 
+    /*
+     * Signature endpoints
+     */
+    public function getSignatureFee(){
+        $url = $this->baseUrl . self::SIGNATURE_ENDPOINT . '/fee';
+        return $this->execute("GET", $url, false, false, true);
+    }
+
+    public function addSecondSignature(){
+        return "NOT_YET_IMPLEMENTED";
+    }
+
+    // Function to execute the call to the Lisk node
     private function execute($method, $url, $body = false, $jsonBody=true, $jsonResponse=true, $timeout=3){
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
