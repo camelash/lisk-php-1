@@ -1,7 +1,8 @@
 {
-    "name": "root/lisk-php",
+    "name": "goforlisk/lisk-php-bundle",
+    "description": "Provides a PHP interface to the Lisk API.",
     "license": "proprietary",
-    "type": "project",
+    "type": "symfony-bundle",
     "autoload": {
         "psr-4": {
             "LiskPhpBundle\\": "src/LiskPhpBundle"
