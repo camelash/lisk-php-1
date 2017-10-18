@@ -67,3 +67,7 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+lisk_php:
+    base_url: 'https://lisk-01.infra.omninetworks.nl:4443'
+    network_hash: 'ed14889723f24ecc54871d058d98ce91ff2f973192075c0155ba2b7b70ad2511'

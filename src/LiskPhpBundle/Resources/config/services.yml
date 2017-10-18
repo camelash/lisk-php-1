@@ -14,9 +14,8 @@ services:
         # if you need to do this, you can override this setting on individual services
         public: false
 
-    # controllers are imported separately to make sure they're public
-    # and have a tag that allows actions to type-hint services
-    LiskPhpBundle\Controller\:
-        resource: '../../src/LiskPhpBundle/Controller'
-        public: true
-        tags: ['controller.service_arguments']
+    LiskPhpBundle\Service\Lisk:
+      autowire: false
+      arguments:
+        $baseUrl: 'https://lisk-01.infra.omninetworks.nl:4443'
+        $networkHash: 'ed14889723f24ecc54871d058d98ce91ff2f973192075c0155ba2b7b70ad2511'

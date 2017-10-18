@@ -8,7 +8,8 @@ class Lisk
     private $minVersion = ">=0.5.0";
     private $OS = "LiskPhpBundle";
     private $apiVersion = "1.0.0";
-    private $networkHash = "ed14889723f24ecc54871d058d98ce91ff2f973192075c0155ba2b7b70ad2511"; // Mainnet
+    private $networkHash;
+    //private $networkHash = "ed14889723f24ecc54871d058d98ce91ff2f973192075c0155ba2b7b70ad2511"; // Mainnet
     //private $networkHash = "da3ed6a45429278bac2666961289ca17ad86595d33b31037615d4b8e8f158bba"; // Testnet
 
     const ACCOUNTS_ENDPOINT = "/api/accounts/";
@@ -17,9 +18,10 @@ class Lisk
     const DELEGATE_ENDPOINT = "/api/delegates/";
     const SIGNATURE_ENDPOINT = "/api/signatures/";
 
-    public function __construct($baseUrl)
+    public function __construct($baseUrl, $networkHash)
     {
         $this->baseUrl = $baseUrl;
+        $this->networkHash = $networkHash;
     }
 
     /*
