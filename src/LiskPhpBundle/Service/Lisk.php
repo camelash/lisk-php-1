@@ -207,13 +207,15 @@ class Lisk
             }
         }
 
-        $port = parse_url($url)['port'];
-        if (!$port) {
-            if (parse_url($url)['scheme']=='https') {
+        $parsedUrl = parse_url($url);
+        if (!isset($parsedUrl["port"])){
+            if (isset($parsedUrl['scheme']) && $parsedUrl['scheme'] === 'https') {
                 $port="443";
             } else {
                 $port="80";
             }
+        } else {
+            $port = $parsedUrl["port"];
         }
         array_push($headers, "minVersion: " . $this->minVersion);
         array_push($headers, "os: ". $this->OS);
