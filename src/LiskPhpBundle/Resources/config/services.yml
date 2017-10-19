@@ -17,5 +17,5 @@ services:
     LiskPhpBundle\Service\Lisk:
       autowire: false
       arguments:
-        $baseUrl: 'https://lisk-01.infra.omninetworks.nl:4443'
-        $networkHash: 'ed14889723f24ecc54871d058d98ce91ff2f973192075c0155ba2b7b70ad2511'
+        $baseUrl: 'https://login.lisk.io'
+        $networkHash: 'ed14889723f24ecc54871d058d98ce91ff2f973192075c0155ba2b7b70ad2511' # Defaults to Mainnet

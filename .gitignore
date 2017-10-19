@@ -16,9 +16,3 @@
 /vendor/
 /web/bundles/
 /.idea
-/web/
-/bin
-/app
-/tests
-/phpunit.xml.dist
-/var
