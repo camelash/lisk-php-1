@@ -24,6 +24,22 @@ class Lisk
         $this->networkHash = $networkHash;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getBaseUrl()
+    {
+        return $this->baseUrl;
+    }
+
+    /**
+     * @param mixed $baseUrl
+     */
+    public function setBaseUrl($baseUrl)
+    {
+        $this->baseUrl = $baseUrl;
+    }
+
     /*
      * Delegate endpoints
      */
