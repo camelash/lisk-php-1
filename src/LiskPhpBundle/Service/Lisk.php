@@ -209,7 +209,6 @@ class Lisk
             $tx["secondSecret"] = $secondSecret;
         }
 
-        die(json_encode($tx));
         return $this->execute("PUT",$url,json_encode($tx),true,true);
     }
 
