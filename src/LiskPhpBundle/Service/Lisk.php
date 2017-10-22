@@ -15,6 +15,7 @@ class Lisk
     const ACCOUNTS_ENDPOINT = "/api/accounts/";
     const BLOCKS_ENDPOINT = "/api/blocks/";
     const LOADER_ENDPOINT = "/api/loader/";
+    const TRANSACTION_ENDPOINT = "/api/transactions/";
     const DELEGATE_ENDPOINT = "/api/delegates/";
     const SIGNATURE_ENDPOINT = "/api/signatures/";
 
@@ -175,10 +176,48 @@ class Lisk
     }
 
     /*
+     * Transaction endpoints
+     */
+    public function getTransactionsByBlockId($blockId, $limit = 100, $orderBy = "timestamp", $orderType = "desc"){
+        $url = $this->baseUrl . self::TRANSACTION_ENDPOINT . "&blockId=".$blockId."&limit=" . $limit . "&orderBy=" . $orderBy . ":". $orderType;
+        return $this->execute("GET",$url,true,false,true);
+    }
+
+    public function getTransactionsBySenderAddress($senderAddress, $limit = 100, $orderBy = "timestamp", $orderType = "desc"){
+        $url = $this->baseUrl . self::TRANSACTION_ENDPOINT . "&senderId=".$senderAddress."&limit=" . $limit . "&orderBy=" . $orderBy . ":". $orderType;
+        return $this->execute("GET",$url,false,false,true);
+    }
+
+    public function getTransactionsByRecipientAddress($recipientAddress, $limit = 100, $orderBy = "timestamp", $orderType = "desc"){
+        $url = $this->baseUrl . self::TRANSACTION_ENDPOINT . "&recipientId=".$recipientAddress."&limit=" . $limit . "&orderBy=" . $orderBy . ":". $orderType;
+        return $this->execute("GET",$url,false,false,true);
+    }
+
+    public function getTransaction($txId){
+        $url = $this->baseUrl . self::TRANSACTION_ENDPOINT . "/get?id=".$txId;
+        return $this->execute("GET",$url,false,false,true);
+    }
+
+    public function sendTransaction($secret, $amount, $recipientAddress, $secondSecret = NULL){
+        $url = $this->baseUrl . self::TRANSACTION_ENDPOINT;
+        $tx = [
+          "secret" => $secret,
+          "amount" => $amount,
+          "recipientId" => $recipientAddress,
+        ];
+        if(!empty($secondSecret)){
+            $tx["secondSecret"] = $secondSecret;
+        }
+
+        die(json_encode($tx));
+        return $this->execute("PUT",$url,json_encode($tx),true,true);
+    }
+
+    /*
      * Block endpoints
      */
-    public function getBlocks(){
-        $url = $this->baseUrl . self::BLOCKS_ENDPOINT;
+    public function getBlocks($generatorPublicKey, $limit = 20, $orderBy = "height", $orderType="desc"){
+        $url = $this->baseUrl . self::BLOCKS_ENDPOINT . "?generatorPublicKey=" . $generatorPublicKey . "&limit=" . $limit . "&orderBy=" . $orderBy . ":". $orderType;
         return $this->execute("GET",$url,false,false,true);
     }
 
