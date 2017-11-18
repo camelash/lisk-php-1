@@ -49,9 +49,9 @@ class Lisk
         return "NOT_YET_IMPLEMENTED";
     }
 
-    public function getDelegates()
+    public function getDelegates($offset = 0, $limit = 100)
     {
-        $url = $this->baseUrl . self::DELEGATE_ENDPOINT;
+        $url = $this->baseUrl . self::DELEGATE_ENDPOINT . "?offset=" . $offset . "&limit=" . $limit;
         return $this->execute("GET", $url, false, false, true);
     }
 
@@ -156,7 +156,7 @@ class Lisk
     public function voteDelegates($votes){
         return "NOT_YET_IMPLEMENTED";
     }
-    
+
     /*
      * Loader endpoints
      */
@@ -209,13 +209,13 @@ class Lisk
             $tx["secondSecret"] = $secondSecret;
         }
 
-        return $this->execute("PUT",$url,json_encode($tx),true,true);
+        return $this->execute("PUT", $url, json_encode($tx),true,true);
     }
 
     /*
      * Block endpoints
      */
-    public function getBlocks($generatorPublicKey, $limit = 20, $orderBy = "height", $orderType="desc"){
+    public function getBlocks($generatorPublicKey = NULL, $limit = 20, $orderBy = "height", $orderType="desc"){
         $url = $this->baseUrl . self::BLOCKS_ENDPOINT . "?generatorPublicKey=" . $generatorPublicKey . "&limit=" . $limit . "&orderBy=" . $orderBy . ":". $orderType;
         return $this->execute("GET",$url,false,false,true);
     }
@@ -243,7 +243,7 @@ class Lisk
     }
 
     // Function to execute the call to the Lisk node
-    private function execute($method, $url, $body = false, $jsonBody=true, $jsonResponse=true, $timeout=3){
+    private function execute($method, $url, $body = false, $jsonBody=true, $jsonResponse=true, $timeout=10){
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $method);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
