@@ -230,6 +230,11 @@ class Lisk
         return $this->execute("GET", $url, false, false, true);
     }
 
+    public function getSupply(){
+        $url = $this->baseUrl . self::BLOCKS_ENDPOINT . "/getSupply";
+        return $this->execute("GET", $url, false, false, true);
+    }
+
     /*
      * Signature endpoints
      */
